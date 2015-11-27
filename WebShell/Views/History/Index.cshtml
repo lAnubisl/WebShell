@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebShell.Models.RunHistoryModel>
+<h2>Runs History</h2>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Executable</th>
+            <th>Last Run</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Dates.First()</td>
+        </tr>
+    }
+    </tbody>
+</table> 
