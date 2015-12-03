@@ -11,25 +11,44 @@ namespace WebShell
     {
         private readonly ConfigurationService config = new ConfigurationService();
 
-        public IEnumerable<RunHistoryModel> LoadRunsHistory()
+        public AllRunsHistoryModel GetAllRunsHistoryModel()
         {
-            return new DirectoryInfo(config.GetRunsHistoryPath())
-                .GetDirectories()
-                .Select(d => new RunHistoryModel
-                {
-                    Name = d.Name,
-                    Dates = LoadRunsHistory(d.Name).Take(10).ToList()
-                })
-                .OrderByDescending(x => x.Dates.First());
+            return new AllRunsHistoryModel
+            {
+                Items =
+                    new DirectoryInfo(config.GetRunsHistoryPath())
+                        .GetDirectories()
+                        .Select(d => GetSingleRunHistoryModel(d.Name))
+                        .OrderByDescending(x => x.Dates.First())
+            };
         }
 
-        public IEnumerable<DateTime> LoadRunsHistory(string name)
+        public SingleRunHistoryModel GetSingleRunHistoryModel(string name)
+        {
+            return new SingleRunHistoryModel
+            {
+                Name = name,
+                Dates = LoadRunsHistory(name)
+            };
+        }
+
+        public Stream GetRunHistoryDetails(string name, DateTime time)
+        {
+            return File.Open(
+                config.GetRunsHistoryPath(name, time), 
+                FileMode.Open, 
+                FileAccess.Read, 
+                FileShare.ReadWrite);
+        }
+
+        private ICollection<DateTime> LoadRunsHistory(string name)
         {
             return Directory
                 .GetFiles(config.GetRunsHistoryPath(name))
                 .Select(Path.GetFileNameWithoutExtension)
                 .Select(f => DateTime.ParseExact(f, ConfigurationService.RunsHistoryFilePattern, CultureInfo.InvariantCulture))
-                .OrderByDescending(x => x);
+                .OrderByDescending(x => x)
+                .ToList();
         }
     }
 }

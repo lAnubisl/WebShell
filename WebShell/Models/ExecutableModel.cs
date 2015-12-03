@@ -13,6 +13,10 @@ namespace WebShell.Models
         public string Path { get; set; }
 
         [Required]
+        [Display(Name = "Working Directory")]
+        public string WorkingDirectory { get; set; }
+
+        [Required]
         public string Arguments { get; set; }
     }
 }

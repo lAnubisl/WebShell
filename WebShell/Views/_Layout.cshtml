@@ -29,7 +29,7 @@
                         </a>
                     </li>
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "History" ? "active" : "")">
-                        <a href="@Url.Action("Index", "History")">Runs History 
+                        <a href="@Url.Action("AllRunsHistory", "History")">Runs History 
                             @(ViewContext.RouteData.Values["controller"].ToString() == "History" 
                                 ? Html.Raw("<span class=\"sr-only\">(current)</span>")
                                   : new HtmlString(string.Empty))

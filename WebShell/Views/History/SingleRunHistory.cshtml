@@ -1,0 +1,17 @@
+﻿@model WebShell.Models.SingleRunHistoryModel
+<h2>@Model.Name Run History</h2>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Date and Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Dates)
+        {
+            <tr onclick="document.location = '@Url.Action("RunHistoryDetails", new { name = Model.Name, time = item.ToString("yyyy_MM_dd_-_HH_mm_ss") })'">
+                <td>@item</td>
+            </tr>
+        }
+    </tbody>
+</table>

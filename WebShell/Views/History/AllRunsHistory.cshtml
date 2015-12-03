@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebShell.Models.RunHistoryModel>
+﻿@model WebShell.Models.AllRunsHistoryModel
 <h2>Runs History</h2>
 <table class="table table-striped table-hover ">
     <thead>
@@ -8,9 +8,9 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Items)
     {
-        <tr>
+        <tr onclick="document.location = '@Url.Action("SingleRunHistory", new { item.Name })'">
             <td>@item.Name</td>
             <td>@item.Dates.First()</td>
         </tr>

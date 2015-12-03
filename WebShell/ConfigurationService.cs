@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Web.Hosting;
 
 namespace WebShell
@@ -38,6 +39,11 @@ namespace WebShell
             }
 
             return result;
+        }
+
+        public string GetRunsHistoryPath(string name, DateTime time)
+        {
+            return Path.Combine(GetRunsHistoryPath(name), time.ToString(RunsHistoryFilePattern) + ".log");
         }
 
         public string GetExecutableFilePath(string name)

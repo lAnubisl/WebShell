@@ -28,7 +28,7 @@ namespace WebShell
 
             using (var process = new Process())
             {
-                process.StartInfo.WorkingDirectory = "C:\\Projects";
+                process.StartInfo.WorkingDirectory = model.WorkingDirectory;
                 process.StartInfo.FileName = model.Path;
                 process.StartInfo.Arguments = model.Arguments;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -37,16 +37,13 @@ namespace WebShell
                 try
                 {
                     process.Start();
-                    using (
-                        var fsw =
-                            new StreamWriter(Path.Combine(config.GetRunsHistoryPath(executableName),
-                                DateTime.Now.ToString(ConfigurationService.RunsHistoryFilePattern) + ".log")))
+                    using (var fsw = new StreamWriter(config.GetRunsHistoryPath(executableName, DateTime.Now)))
                     {
-                        string outputLine;
-                        while ((outputLine = process.StandardOutput.ReadLine()) != null)
+                        string line;
+                        while ((line = process.StandardOutput.ReadLine()) != null)
                         {
-                            fsw.WriteLine(outputLine);
-                            context.Response.Write(string.Format("<span>{0}</span><br/>", outputLine));
+                            fsw.WriteLine(line);
+                            context.Response.Write(string.Format("<span>{0}</span><br/>", line));
                             context.Response.Flush();
                         }
                     }
